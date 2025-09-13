@@ -1,6 +1,16 @@
+import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 
-async function getPosts() {
+interface Post {
+  title: string;
+  slug: { current: string };
+  publishedAt: string;
+  excerpt?: string;
+  author?: { name: string; image?: unknown };
+  categories?: { title: string }[];
+}
+
+async function getPosts(): Promise<Post[]> {
   const posts = await client.fetch(`
     *[_type == "post"] | order(publishedAt desc) [0...5] {
       title,
@@ -30,7 +40,7 @@ const Home = async () => {
           
           {posts.length > 0 ? (
             <div className="space-y-8">
-              {posts.map((post: any) => (
+              {posts.map((post) => (
                 <div key={post.slug?.current} className="border-b pb-8">
                   <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
                   {post.excerpt && (
@@ -41,9 +51,9 @@ const Home = async () => {
                     {post.publishedAt && (
                       <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
                     )}
-                    {post.categories?.length > 0 && (
+                    {post.categories && post.categories.length > 0 && (
                       <span>
-                        {post.categories.map((cat: any) => cat.title).join(", ")}
+                        {post.categories.map((cat) => cat.title).join(", ")}
                       </span>
                     )}
                   </div>
@@ -55,9 +65,9 @@ const Home = async () => {
               <h2 className="text-xl font-semibold mb-2">No posts yet</h2>
               <p className="text-muted-foreground">
                 Create your first post in the Sanity Studio at{" "}
-                <a href="/studio" className="underline hover:text-foreground">
+                <Link href="/studio" className="underline hover:text-foreground">
                   /studio
-                </a>
+                </Link>
               </p>
             </div>
           )}
