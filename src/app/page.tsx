@@ -1,103 +1,155 @@
-import Image from "next/image";
-
-export default function Home() {
+const Home = () => {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <section className="py-32">
+      <div className=" flex flex-col gap-12 lg:flex-row lg:gap-24">
+        <article className="mx-auto">
+          <img
+            src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg"
+            alt="placeholder"
+            className="mb-8 aspect-video w-full max-w-3xl rounded-lg border object-cover"
+          />
+          <div className="prose dark:prose-invert">
+            <h1>How Mercury uses shadcn/ui to build their design system</h1>
+            <p>
+              Once upon a time, in a far-off land, there was a very lazy king
+              who spent all day lounging on his throne. One day, his advisors
+              came to him with a problem: the kingdom was running out of money.
+            </p>
+            <h2>The King&apos;s Plan</h2>
+            <p>
+              The king thought long and hard, and finally came up with{" "}
+              <a href="#">a brilliant plan</a>: he would tax the jokes in the
+              kingdom.
+            </p>
+            <blockquote>
+              &ldquo;After all,&rdquo; he said, &ldquo;everyone enjoys a good
+              joke, so it&apos;s only fair that they should pay for the
+              privilege.&rdquo;
+            </blockquote>
+            <h3>The Joke Tax</h3>
+            <p>
+              The king&apos;s subjects were not amused. They grumbled and
+              complained, but the king was firm:
+            </p>
+            <ul>
+              <li>1st level of puns: 5 gold coins</li>
+              <li>2nd level of jokes: 10 gold coins</li>
+              <li>3rd level of one-liners : 20 gold coins</li>
+            </ul>
+            <p>
+              As a result, people stopped telling jokes, and the kingdom fell
+              into a gloom. But there was one person who refused to let the
+              king&apos;s foolishness get him down: a court jester named
+              Jokester.
+            </p>
+            <h3>Jokester&apos;s Revolt</h3>
+            <p>
+              Jokester began sneaking into the castle in the middle of the night
+              and leaving jokes all over the place: under the king&apos;s
+              pillow, in his soup, even in the royal toilet. The king was
+              furious, but he couldn&apos;t seem to stop Jokester.
+            </p>
+            <p>
+              And then, one day, the people of the kingdom discovered that the
+              jokes left by Jokester were so funny that they couldn&apos;t help
+              but laugh. And once they started laughing, they couldn&apos;t
+              stop.
+            </p>
+            <h3>The People&apos;s Rebellion</h3>
+            <p>
+              The people of the kingdom, feeling uplifted by the laughter,
+              started to tell jokes and puns again, and soon the entire kingdom
+              was in on the joke.
+            </p>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>King&apos;s Treasury</th>
+                    <th>People&apos;s happiness</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Empty</td>
+                    <td>Overflowing</td>
+                  </tr>
+                  <tr className="even:bg-muted m-0 border-t p-0">
+                    <td>Modest</td>
+                    <td>Satisfied</td>
+                  </tr>
+                  <tr className="even:bg-muted m-0 border-t p-0">
+                    <td>Full</td>
+                    <td>Ecstatic</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              The king, seeing how much happier his subjects were, realized the
+              error of his ways and repealed the joke tax. Jokester was declared
+              a hero, and the kingdom lived happily ever after.
+            </p>
+            <p>
+              The moral of the story is: never underestimate the power of a good
+              laugh and always be careful of bad ideas.
+            </p>
+          </div>
+        </article>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <aside className="lg:max-w-[300px]">
+          <div className="border-border bg-accent flex flex-col items-start rounded-lg border py-6 md:py-8">
+            <div className="mb-8 px-6">
+              <img
+                src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/company/fictional-company-logo-3.svg"
+                alt="placeholder"
+                className="max-h-8 w-full"
+              />
+            </div>
+            <div className="mb-5 px-6 last:mb-0">
+              <div className="mb-2 text-xs font-semibold">Company</div>
+              <div className="text-muted-foreground overflow-hidden text-xs md:text-sm">
+                Suspendisse vel euismod sem. Sed sollicitudin augue eu facilisis
+                scelerisque. Nullam pharetra tortor ut massa accumsan egestas.
+              </div>
+            </div>
+            <div className="mb-5 px-6 last:mb-0">
+              <div className="mb-2 text-xs font-semibold">Industry</div>
+              <div className="text-muted-foreground overflow-hidden text-xs md:text-sm">
+                Suspendisse volutpat
+              </div>
+            </div>
+            <div className="border-border mb-5 w-full border-t px-6 pt-5 last:mb-0">
+              <div className="mb-2 text-xs font-semibold">Location</div>
+              <div className="text-muted-foreground overflow-hidden text-xs md:text-sm">
+                London, United Kingdom
+              </div>
+            </div>
+            <div className="mb-5 px-6 last:mb-0">
+              <div className="mb-2 text-xs font-semibold">Company size</div>
+              <div className="text-muted-foreground overflow-hidden text-xs md:text-sm">
+                11-50
+              </div>
+            </div>
+            <div className="mb-5 px-6 last:mb-0">
+              <div className="mb-2 text-xs font-semibold">Website</div>
+              <div className="text-muted-foreground overflow-hidden text-xs md:text-sm">
+                <a href="#" className="hover:text-foreground underline">
+                  https://example.com/
+                </a>
+              </div>
+            </div>
+            <div className="mb-5 px-6 last:mb-0">
+              <div className="mb-2 text-xs font-semibold">Topics</div>
+              <div className="text-muted-foreground overflow-hidden text-xs md:text-sm">
+                Sed sollicitudin augue eu facilisis scelerisque
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
   );
-}
+};
+
+export default Home
