@@ -59,8 +59,8 @@ export default async function PostPage({
   }
 
   return (
-    <section className="py-32">
-      <div className="container flex flex-col gap-12 lg:flex-row lg:gap-24">
+    <section className="py-32 max-w-7xl justify-center flex mx-auto px-6">
+      <div className="flex flex-col gap-12 lg:flex-row lg:gap-24">
         <article className="mx-auto">
           <div className="mb-8">
             <Link 
@@ -104,17 +104,8 @@ export default async function PostPage({
           )}
         </article>
 
-        <aside className="lg:max-w-[300px]">
+        <aside className="lg:max-w-[500px] w-full">
           <div className="border-border bg-accent flex flex-col items-start rounded-lg border py-6 md:py-8">
-            <div className="mb-8 px-6">
-              <Image
-                src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/company/fictional-company-logo-3.svg"
-                alt="placeholder"
-                width={200}
-                height={32}
-                className="max-h-8 w-full"
-              />
-            </div>
             <div className="mb-5 px-6 last:mb-0">
               <div className="mb-2 text-xs font-semibold">Post</div>
               <div className="text-muted-foreground overflow-hidden text-xs md:text-sm">

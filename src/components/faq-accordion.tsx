@@ -26,7 +26,7 @@ export function FAQAccordion({ faqs, className }: FAQAccordionProps) {
 
   return (
     <div className={className}>
-      <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+      <h2 className="text-2xl font-bold mb-6">FAQ</h2>
       <Accordion type="single" collapsible className="w-full">
         {faqs.map((faq) => (
           <AccordionItem key={faq._key} value={faq._key}>
