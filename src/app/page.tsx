@@ -11,16 +11,18 @@ interface Post {
 }
 
 async function getPosts(): Promise<Post[]> {
-  const posts = await client.fetch(`
-    *[_type == "post"] | order(publishedAt desc) [0...5] {
+  const posts = await client.fetch(
+    `*[_type == "post"] | order(publishedAt desc) [0...5] {
       title,
       slug,
       publishedAt,
       excerpt,
       author->{name, image},
       categories[]->{title}
-    }
-  `);
+    }`,
+    {},
+    { next: { revalidate: 60 } } // Revalidate every 60 seconds
+  );
   return posts;
 }
 
