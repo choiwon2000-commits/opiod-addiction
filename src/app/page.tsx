@@ -1,100 +1,66 @@
-const Home = () => {
+import { client } from "@/sanity/lib/client";
+
+async function getPosts() {
+  const posts = await client.fetch(`
+    *[_type == "post"] | order(publishedAt desc) [0...5] {
+      title,
+      slug,
+      publishedAt,
+      excerpt,
+      author->{name, image},
+      categories[]->{title}
+    }
+  `);
+  return posts;
+}
+
+const Home = async () => {
+  const posts = await getPosts();
+
   return (
     <section className="py-32">
-      <div className=" flex flex-col gap-12 lg:flex-row lg:gap-24">
+      <div className="flex flex-col gap-12 lg:flex-row lg:gap-24">
         <article className="mx-auto">
-          <img
-            src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg"
-            alt="placeholder"
-            className="mb-8 aspect-video w-full max-w-3xl rounded-lg border object-cover"
-          />
-          <div className="prose dark:prose-invert">
-            <h1>How Mercury uses shadcn/ui to build their design system</h1>
-            <p>
-              Once upon a time, in a far-off land, there was a very lazy king
-              who spent all day lounging on his throne. One day, his advisors
-              came to him with a problem: the kingdom was running out of money.
-            </p>
-            <h2>The King&apos;s Plan</h2>
-            <p>
-              The king thought long and hard, and finally came up with{" "}
-              <a href="#">a brilliant plan</a>: he would tax the jokes in the
-              kingdom.
-            </p>
-            <blockquote>
-              &ldquo;After all,&rdquo; he said, &ldquo;everyone enjoys a good
-              joke, so it&apos;s only fair that they should pay for the
-              privilege.&rdquo;
-            </blockquote>
-            <h3>The Joke Tax</h3>
-            <p>
-              The king&apos;s subjects were not amused. They grumbled and
-              complained, but the king was firm:
-            </p>
-            <ul>
-              <li>1st level of puns: 5 gold coins</li>
-              <li>2nd level of jokes: 10 gold coins</li>
-              <li>3rd level of one-liners : 20 gold coins</li>
-            </ul>
-            <p>
-              As a result, people stopped telling jokes, and the kingdom fell
-              into a gloom. But there was one person who refused to let the
-              king&apos;s foolishness get him down: a court jester named
-              Jokester.
-            </p>
-            <h3>Jokester&apos;s Revolt</h3>
-            <p>
-              Jokester began sneaking into the castle in the middle of the night
-              and leaving jokes all over the place: under the king&apos;s
-              pillow, in his soup, even in the royal toilet. The king was
-              furious, but he couldn&apos;t seem to stop Jokester.
-            </p>
-            <p>
-              And then, one day, the people of the kingdom discovered that the
-              jokes left by Jokester were so funny that they couldn&apos;t help
-              but laugh. And once they started laughing, they couldn&apos;t
-              stop.
-            </p>
-            <h3>The People&apos;s Rebellion</h3>
-            <p>
-              The people of the kingdom, feeling uplifted by the laughter,
-              started to tell jokes and puns again, and soon the entire kingdom
-              was in on the joke.
-            </p>
-            <div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>King&apos;s Treasury</th>
-                    <th>People&apos;s happiness</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Empty</td>
-                    <td>Overflowing</td>
-                  </tr>
-                  <tr className="even:bg-muted m-0 border-t p-0">
-                    <td>Modest</td>
-                    <td>Satisfied</td>
-                  </tr>
-                  <tr className="even:bg-muted m-0 border-t p-0">
-                    <td>Full</td>
-                    <td>Ecstatic</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p>
-              The king, seeing how much happier his subjects were, realized the
-              error of his ways and repealed the joke tax. Jokester was declared
-              a hero, and the kingdom lived happily ever after.
-            </p>
-            <p>
-              The moral of the story is: never underestimate the power of a good
-              laugh and always be careful of bad ideas.
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold mb-4">Welcome to Our Blog</h1>
+            <p className="text-lg text-muted-foreground">
+              Latest posts from our content management system
             </p>
           </div>
+          
+          {posts.length > 0 ? (
+            <div className="space-y-8">
+              {posts.map((post: any) => (
+                <div key={post.slug?.current} className="border-b pb-8">
+                  <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
+                  {post.excerpt && (
+                    <p className="text-muted-foreground mb-4">{post.excerpt}</p>
+                  )}
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    {post.author?.name && <span>By {post.author.name}</span>}
+                    {post.publishedAt && (
+                      <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
+                    )}
+                    {post.categories?.length > 0 && (
+                      <span>
+                        {post.categories.map((cat: any) => cat.title).join(", ")}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <h2 className="text-xl font-semibold mb-2">No posts yet</h2>
+              <p className="text-muted-foreground">
+                Create your first post in the Sanity Studio at{" "}
+                <a href="/studio" className="underline hover:text-foreground">
+                  /studio
+                </a>
+              </p>
+            </div>
+          )}
         </article>
 
         <aside className="lg:max-w-[300px]">
