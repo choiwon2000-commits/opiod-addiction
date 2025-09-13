@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client";
 import { Button } from "@/components/ui/button";
 import { PillIcon } from "lucide-react";
+import Link from "next/link";
 
 interface Post {
   title: string;
@@ -55,12 +56,11 @@ const Home = async () => {
                   variant="outline"
                   asChild
                 >
-                  <a
+                  <Link
                     href={`/posts/${post.slug.current}`}
-                    target="_blank"
                   >
                     {post.title}
-                  </a>
+                  </Link>
                 </Button>
               );
             })}

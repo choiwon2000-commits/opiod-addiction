@@ -3,6 +3,13 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { PortableText, type PortableTextBlock } from "next-sanity";
+import { FAQAccordion } from "@/components/faq-accordion";
+
+interface FAQ {
+  _key: string;
+  question: string;
+  answer: PortableTextBlock[];
+}
 
 interface Post {
   title: string;
@@ -13,6 +20,7 @@ interface Post {
   categories?: { title: string }[];
   mainImage?: { asset: { url: string } };
   body?: PortableTextBlock[];
+  faqs?: FAQ[];
 }
 
 async function getPost(slug: string): Promise<Post | null> {
@@ -25,7 +33,12 @@ async function getPost(slug: string): Promise<Post | null> {
       author->{name, image},
       categories[]->{title},
       mainImage{asset->{url}},
-      body
+      body,
+      faqs[]{
+        _key,
+        question,
+        answer
+      }
     }`,
     { slug },
     { next: { revalidate: 60 } }
@@ -82,6 +95,13 @@ export default async function PostPage({
 
             {post.body && <PortableText value={post.body} />}
           </div>
+
+          {post.faqs && post.faqs.length > 0 && (
+            <FAQAccordion 
+              faqs={post.faqs} 
+              className="mt-12 max-w-none"
+            />
+          )}
         </article>
 
         <aside className="lg:max-w-[300px]">

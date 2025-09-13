@@ -50,6 +50,44 @@ export const postType = defineType({
       name: 'body',
       type: 'blockContent',
     }),
+    defineField({
+      name: 'faqs',
+      title: 'Frequently Asked Questions',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faq',
+          title: 'FAQ',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'Question',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Answer',
+              type: 'blockContent',
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'question',
+            },
+            prepare(selection) {
+              const { title } = selection;
+              return {
+                title: title || 'FAQ',
+                subtitle: 'Question & Answer',
+              };
+            },
+          },
+        }),
+      ],
+    }),
   ],
   preview: {
     select: {
