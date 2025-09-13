@@ -29,7 +29,7 @@ export function FAQAccordion({ faqs, className }: FAQAccordionProps) {
       <h2 className="text-2xl font-bold mb-6">FAQ</h2>
       <Accordion type="single" collapsible className="w-full">
         {faqs.map((faq) => (
-          <AccordionItem key={faq._key} value={faq._key}>
+          <AccordionItem key={faq._key} value={faq._key} id={`faq-item-${faq._key}`} className="scroll-mt-20">
             <AccordionTrigger className="text-left">
               {faq.question}
             </AccordionTrigger>

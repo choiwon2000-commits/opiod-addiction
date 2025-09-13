@@ -2,8 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import { PortableText, type PortableTextBlock } from "next-sanity";
+import { type PortableTextBlock } from "next-sanity";
 import { FAQAccordion } from "@/components/faq-accordion";
+import { TableOfContents } from "@/components/table-of-contents";
+import { PortableTextWithHeadings } from "@/components/portable-text-with-headings";
 
 interface FAQ {
   _key: string;
@@ -81,8 +83,8 @@ export default async function PostPage({
             />
           )}
           
-          <div className="prose dark:prose-invert max-w-none">
-            <h1>{post.title}</h1>
+          <div className="flex flex-col gap-2 prose dark:prose-invert max-w-none">
+            <h1 className="text-4xl font-semibold">{post.title}</h1>
             {post.excerpt && <p className="lead text-lg">{post.excerpt}</p>}
             
             <div className="flex items-center gap-4 text-sm text-muted-foreground mb-8 not-prose">
@@ -93,14 +95,16 @@ export default async function PostPage({
               )}
             </div>
 
-            {post.body && <PortableText value={post.body} />}
+            {post.body && <PortableTextWithHeadings value={post.body} />}
           </div>
 
           {post.faqs && post.faqs.length > 0 && (
-            <FAQAccordion 
-              faqs={post.faqs} 
-              className="mt-12 max-w-none"
-            />
+            <div id="faq-section" className="scroll-mt-20">
+              <FAQAccordion 
+                faqs={post.faqs} 
+                className="mt-12 max-w-none"
+              />
+            </div>
           )}
         </article>
 
@@ -148,6 +152,14 @@ export default async function PostPage({
               </div>
             </div>
           </div>
+
+          {(post.body || (post.faqs && post.faqs.length > 0)) && (
+            <div className="border-border bg-accent/50 flex flex-col items-start rounded-lg border py-6 md:py-8 mt-6">
+              <div className="px-6 w-full">
+                <TableOfContents content={post.body || []} faqs={post.faqs} />
+              </div>
+            </div>
+          )}
         </aside>
       </div>
     </section>
