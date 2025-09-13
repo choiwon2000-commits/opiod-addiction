@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { Button } from "@/components/ui/button";
 import { PillIcon } from "lucide-react";
@@ -11,7 +10,7 @@ interface Post {
   author?: { name: string; image?: unknown };
   categories?: { title: string }[];
   mainImage?: { asset: { url: string } };
-  body?: any;
+  body?: unknown;
 }
 
 async function getPosts(): Promise<Post[]> {

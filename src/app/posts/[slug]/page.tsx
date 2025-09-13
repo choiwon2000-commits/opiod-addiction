@@ -1,7 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import { PortableText } from "next-sanity";
+import { PortableText, type PortableTextBlock } from "next-sanity";
 
 interface Post {
   title: string;
@@ -11,7 +12,7 @@ interface Post {
   author?: { name: string; image?: unknown };
   categories?: { title: string }[];
   mainImage?: { asset: { url: string } };
-  body?: any;
+  body?: PortableTextBlock[];
 }
 
 async function getPost(slug: string): Promise<Post | null> {
@@ -57,9 +58,11 @@ export default async function PostPage({
           </div>
           
           {post.mainImage?.asset?.url && (
-            <img
+            <Image
               src={post.mainImage.asset.url}
               alt={post.title}
+              width={768}
+              height={432}
               className="mb-8 aspect-video w-full max-w-3xl rounded-lg border object-cover"
             />
           )}
@@ -83,9 +86,11 @@ export default async function PostPage({
         <aside className="lg:max-w-[300px]">
           <div className="border-border bg-accent flex flex-col items-start rounded-lg border py-6 md:py-8">
             <div className="mb-8 px-6">
-              <img
+              <Image
                 src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/company/fictional-company-logo-3.svg"
                 alt="placeholder"
+                width={200}
+                height={32}
                 className="max-h-8 w-full"
               />
             </div>
