@@ -98,6 +98,15 @@ export default async function PostPage({
             {post.body && <PortableTextWithHeadings value={post.body} />}
           </div>
 
+          {/* Mobile Table of Contents - shown after content on mobile */}
+          {(post.body || (post.faqs && post.faqs.length > 0)) && (
+            <div className="lg:hidden mt-8 border-border bg-accent/50 flex flex-col items-start rounded-lg border py-6">
+              <div className="px-6 w-full">
+                <TableOfContents content={post.body || []} faqs={post.faqs} />
+              </div>
+            </div>
+          )}
+
           {post.faqs && post.faqs.length > 0 && (
             <div id="faq-section" className="scroll-mt-20">
               <FAQAccordion 
@@ -153,8 +162,9 @@ export default async function PostPage({
             </div>
           </div>
 
+          {/* Desktop Table of Contents - hidden on mobile */}
           {(post.body || (post.faqs && post.faqs.length > 0)) && (
-            <div className="border-border bg-accent/50 flex flex-col items-start rounded-lg border py-6 md:py-8 mt-6">
+            <div className="hidden lg:flex border-border bg-accent/50 flex-col items-start rounded-lg border py-6 md:py-8 mt-6">
               <div className="px-6 w-full">
                 <TableOfContents content={post.body || []} faqs={post.faqs} />
               </div>
