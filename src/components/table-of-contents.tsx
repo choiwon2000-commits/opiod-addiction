@@ -19,10 +19,11 @@ interface Heading {
 interface TableOfContentsProps {
   content: PortableTextBlock[];
   faqs?: FAQ[];
+  additionalContent?: PortableTextBlock[];
   className?: string;
 }
 
-function extractHeadings(content: PortableTextBlock[], faqs?: FAQ[]): Heading[] {
+function extractHeadings(content: PortableTextBlock[], faqs?: FAQ[], additionalContent?: PortableTextBlock[]): Heading[] {
   const headings: Heading[] = [];
   
   // Extract headings from content
@@ -67,6 +68,31 @@ function extractHeadings(content: PortableTextBlock[], faqs?: FAQ[]): Heading[] 
       });
     });
   }
+
+  // Extract headings from additional content that appears after FAQ
+  if (additionalContent) {
+    additionalContent.forEach((block, blockIndex) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const blockData = block as any;
+      if (block._type === 'block' && ['h1', 'h2', 'h3', 'h4'].includes(blockData.style || '')) {
+        const text = blockData.children
+          ?.map((child: { text?: string }) => child.text || '')
+          .join('') || '';
+        
+        if (text.trim()) {
+          const level = parseInt(blockData.style.charAt(1));
+          const id = `additional-heading-${blockIndex}-${text.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+          
+          headings.push({
+            id,
+            text: text.trim(),
+            level,
+            type: 'heading',
+          });
+        }
+      }
+    });
+  }
   
   return headings;
 }
@@ -97,14 +123,14 @@ function scrollToHeading(id: string) {
   }
 }
 
-export function TableOfContents({ content, faqs, className }: TableOfContentsProps) {
+export function TableOfContents({ content, faqs, additionalContent, className }: TableOfContentsProps) {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeId, setActiveId] = useState<string>('');
 
   useEffect(() => {
-    const extractedHeadings = extractHeadings(content, faqs);
+    const extractedHeadings = extractHeadings(content, faqs, additionalContent);
     setHeadings(extractedHeadings);
-  }, [content, faqs]);
+  }, [content, faqs, additionalContent]);
 
   useEffect(() => {
     // Intersection Observer to track which heading is currently in view

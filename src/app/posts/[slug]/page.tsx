@@ -23,6 +23,7 @@ interface Post {
   mainImage?: { asset: { url: string } };
   body?: PortableTextBlock[];
   faqs?: FAQ[];
+  additionalContent?: PortableTextBlock[];
 }
 
 async function getPost(slug: string): Promise<Post | null> {
@@ -40,7 +41,8 @@ async function getPost(slug: string): Promise<Post | null> {
         _key,
         question,
         answer
-      }
+      },
+      additionalContent
     }`,
     { slug },
     { next: { revalidate: 60 } }
@@ -99,10 +101,14 @@ export default async function PostPage({
           </div>
 
           {/* Mobile Table of Contents - shown after content on mobile */}
-          {(post.body || (post.faqs && post.faqs.length > 0)) && (
+          {(post.body || (post.faqs && post.faqs.length > 0) || post.additionalContent) && (
             <div className="lg:hidden mt-8 border-border bg-accent/50 flex flex-col items-start rounded-lg border py-6">
               <div className="px-6 w-full">
-                <TableOfContents content={post.body || []} faqs={post.faqs} />
+                <TableOfContents 
+                  content={post.body || []} 
+                  faqs={post.faqs} 
+                  additionalContent={post.additionalContent}
+                />
               </div>
             </div>
           )}
@@ -113,6 +119,12 @@ export default async function PostPage({
                 faqs={post.faqs} 
                 className="mt-12 max-w-none"
               />
+            </div>
+          )}
+
+          {post.additionalContent && (
+            <div className="prose dark:prose-invert max-w-none mt-12">
+              <PortableTextWithHeadings value={post.additionalContent} />
             </div>
           )}
         </article>
@@ -163,10 +175,14 @@ export default async function PostPage({
           </div>
 
           {/* Desktop Table of Contents - hidden on mobile */}
-          {(post.body || (post.faqs && post.faqs.length > 0)) && (
+          {(post.body || (post.faqs && post.faqs.length > 0) || post.additionalContent) && (
             <div className="hidden lg:flex border-border bg-accent/50 flex-col items-start rounded-lg border py-6 md:py-8 mt-6">
               <div className="px-6 w-full">
-                <TableOfContents content={post.body || []} faqs={post.faqs} />
+                <TableOfContents 
+                  content={post.body || []} 
+                  faqs={post.faqs} 
+                  additionalContent={post.additionalContent}
+                />
               </div>
             </div>
           )}

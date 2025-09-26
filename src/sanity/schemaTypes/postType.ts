@@ -88,6 +88,12 @@ export const postType = defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'additionalContent',
+      title: 'Additional Content (Below FAQ)',
+      description: 'Main content that appears after the FAQ section',
+      type: 'blockContent',
+    }),
   ],
   preview: {
     select: {
