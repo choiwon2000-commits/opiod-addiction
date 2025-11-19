@@ -22,24 +22,54 @@ function generateHeadingId(block: PortableTextBlock, blockIndex: number): string
 const components: PortableTextComponents = {
   types: {
     image: ({ value }) => {
-      if (!value?.asset?._ref) {
-        return null;
+      // Handle different possible image data structures
+      const asset = value?.asset || value;
+      
+      // Check for various asset reference formats
+      if (!asset?._ref && !asset?.url) {
+        console.log('Image data:', value);
+        return (
+          <div className="my-8 p-4 bg-muted rounded-lg">
+            <p className="text-sm text-muted-foreground">
+              Image could not be displayed. Check console for details.
+            </p>
+          </div>
+        );
       }
 
-      const imageUrl = urlFor(value).width(800).height(600).url();
+      let imageUrl: string;
+      
+      try {
+        if (asset.url) {
+          // Direct URL
+          imageUrl = asset.url;
+        } else {
+          // Use Sanity URL builder
+          imageUrl = urlFor(value).width(800).height(600).url();
+        }
+      } catch (error) {
+        console.error('Error generating image URL:', error, value);
+        return (
+          <div className="my-8 p-4 bg-muted rounded-lg">
+            <p className="text-sm text-muted-foreground">
+              Error generating image URL. Check console for details.
+            </p>
+          </div>
+        );
+      }
       
       return (
         <div className="my-8">
           <Image
             src={imageUrl}
-            alt={value.alt || ''}
+            alt={value.alt || value.caption || ''}
             width={800}
             height={600}
             className="rounded-lg border object-cover w-full"
           />
-          {value.alt && (
+          {(value.alt || value.caption) && (
             <p className="text-sm text-muted-foreground mt-2 text-center italic">
-              {value.alt}
+              {value.alt || value.caption}
             </p>
           )}
         </div>
