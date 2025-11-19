@@ -139,7 +139,7 @@ export default function SearchPage() {
                 <div className="bg-white/90 border border-slate-200 rounded-lg shadow-sm p-5">
                   <p className="text-sm text-slate-700">
                     Geen resultaten gevonden voor{" "}
-                    <span className="font-semibold">"{query}"</span>. Probeer een andere term.
+                    <span className="font-semibold">&quot;{query}&quot;</span>. Probeer een andere term.
                   </p>
                 </div>
               ) : (
