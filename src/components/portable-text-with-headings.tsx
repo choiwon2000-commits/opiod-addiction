@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { PortableText, type PortableTextBlock, type PortableTextComponents } from "next-sanity";
-import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 
 interface PortableTextWithHeadingsProps {
@@ -22,46 +21,14 @@ function generateHeadingId(block: PortableTextBlock, blockIndex: number): string
 const components: PortableTextComponents = {
   types: {
     image: ({ value }) => {
-      // Handle different possible image data structures
-      const asset = value?.asset || value;
-      
-      // Check for various asset reference formats
-      if (!asset?._ref && !asset?.url) {
-        console.log('Image data:', value);
-        return (
-          <div className="my-8 p-4 bg-muted rounded-lg">
-            <p className="text-sm text-muted-foreground">
-              Image could not be displayed. Check console for details.
-            </p>
-          </div>
-        );
+      if (!value?.asset?.url) {
+        return null;
       }
 
-      let imageUrl: string;
-      
-      try {
-        if (asset.url) {
-          // Direct URL
-          imageUrl = asset.url;
-        } else {
-          // Use Sanity URL builder
-          imageUrl = urlFor(value).width(800).height(600).url();
-        }
-      } catch (error) {
-        console.error('Error generating image URL:', error, value);
-        return (
-          <div className="my-8 p-4 bg-muted rounded-lg">
-            <p className="text-sm text-muted-foreground">
-              Error generating image URL. Check console for details.
-            </p>
-          </div>
-        );
-      }
-      
       return (
         <div className="my-8">
           <Image
-            src={imageUrl}
+            src={value.asset.url}
             alt={value.alt || value.caption || ''}
             width={800}
             height={600}

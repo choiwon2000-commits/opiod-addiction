@@ -36,13 +36,40 @@ async function getPost(slug: string): Promise<Post | null> {
       author->{name, image},
       categories[]->{title},
       mainImage{asset->{url}},
-      body,
+      body[]{
+        ...,
+        _type == "image" => {
+          ...,
+          asset->{
+            _id,
+            url
+          }
+        }
+      },
       faqs[]{
         _key,
         question,
-        answer
+        answer[]{
+          ...,
+          _type == "image" => {
+            ...,
+            asset->{
+              _id,
+              url
+            }
+          }
+        }
       },
-      additionalContent
+      additionalContent[]{
+        ...,
+        _type == "image" => {
+          ...,
+          asset->{
+            _id,
+            url
+          }
+        }
+      }
     }`,
     { slug },
     { next: { revalidate: 60 } }
