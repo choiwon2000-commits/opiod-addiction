@@ -3,19 +3,11 @@
 import React from 'react';
 import { PortableText, type PortableTextBlock, type PortableTextComponents } from "next-sanity";
 import Image from "next/image";
+import { getHeadingId } from "@/lib/heading-id";
 
 interface PortableTextWithHeadingsProps {
   value: PortableTextBlock[];
   className?: string;
-}
-
-function generateHeadingId(block: PortableTextBlock, blockIndex: number): string {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const blockData = block as any;
-  const text = blockData.children
-    ?.map((child: { text?: string }) => child.text || '')
-    .join('') || '';
-  return `heading-${blockIndex}-${text.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
 }
 
 const components: PortableTextComponents = {
@@ -44,23 +36,23 @@ const components: PortableTextComponents = {
     },
   },
   block: {
-    h1: ({ children, value, index = 0 }) => (
-      <h1 id={generateHeadingId(value, index)} className="scroll-mt-20 text-4xl font-bold mt-8 mb-4">
+    h1: ({ children, value }) => (
+      <h1 id={getHeadingId(value)} className="scroll-mt-20 text-4xl font-bold mt-8 mb-4">
         {children}
       </h1>
     ),
-    h2: ({ children, value, index = 0 }) => (
-      <h2 id={generateHeadingId(value, index)} className="scroll-mt-20 text-3xl font-semibold mt-6 mb-3">
+    h2: ({ children, value }) => (
+      <h2 id={getHeadingId(value)} className="scroll-mt-20 text-3xl font-semibold mt-6 mb-3">
         {children}
       </h2>
     ),
-    h3: ({ children, value, index = 0 }) => (
-      <h3 id={generateHeadingId(value, index)} className="scroll-mt-20 text-2xl font-semibold mt-5 mb-2">
+    h3: ({ children, value }) => (
+      <h3 id={getHeadingId(value)} className="scroll-mt-20 text-2xl font-semibold mt-5 mb-2">
         {children}
       </h3>
     ),
-    h4: ({ children, value, index = 0 }) => (
-      <h4 id={generateHeadingId(value, index)} className="scroll-mt-20 text-xl font-medium mt-4 mb-2">
+    h4: ({ children, value }) => (
+      <h4 id={getHeadingId(value)} className="scroll-mt-20 text-xl font-medium mt-4 mb-2">
         {children}
       </h4>
     ),

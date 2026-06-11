@@ -1,7 +1,8 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { type PortableTextBlock } from "next-sanity";
+import { getHeadingId } from "@/lib/heading-id";
 
 interface FAQ {
   _key: string;
@@ -27,7 +28,7 @@ function extractHeadings(content: PortableTextBlock[], faqs?: FAQ[], additionalC
   const headings: Heading[] = [];
   
   // Extract headings from content
-  content.forEach((block, blockIndex) => {
+  content.forEach((block) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const blockData = block as any;
     if (block._type === 'block' && ['h1', 'h2', 'h3', 'h4'].includes(blockData.style || '')) {
@@ -37,10 +38,9 @@ function extractHeadings(content: PortableTextBlock[], faqs?: FAQ[], additionalC
       
       if (text.trim()) {
         const level = parseInt(blockData.style.charAt(1));
-        const id = `heading-${blockIndex}-${text.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
         
         headings.push({
-          id,
+          id: getHeadingId(block),
           text: text.trim(),
           level,
           type: 'heading',
@@ -71,7 +71,7 @@ function extractHeadings(content: PortableTextBlock[], faqs?: FAQ[], additionalC
 
   // Extract headings from additional content that appears after FAQ
   if (additionalContent) {
-    additionalContent.forEach((block, blockIndex) => {
+    additionalContent.forEach((block) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const blockData = block as any;
       if (block._type === 'block' && ['h1', 'h2', 'h3', 'h4'].includes(blockData.style || '')) {
@@ -81,10 +81,9 @@ function extractHeadings(content: PortableTextBlock[], faqs?: FAQ[], additionalC
         
         if (text.trim()) {
           const level = parseInt(blockData.style.charAt(1));
-          const id = `additional-heading-${blockIndex}-${text.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
           
           headings.push({
-            id,
+            id: getHeadingId(block),
             text: text.trim(),
             level,
             type: 'heading',
@@ -97,40 +96,47 @@ function extractHeadings(content: PortableTextBlock[], faqs?: FAQ[], additionalC
   return headings;
 }
 
-function scrollToHeading(id: string) {
+function scrollToHeading(
+  event: React.MouseEvent<HTMLAnchorElement>,
+  id: string
+) {
   const element = document.getElementById(id);
-  if (element) {
-    // If it's an FAQ item, try to open the accordion first
-    if (id.startsWith('faq-item-')) {
-      const trigger = element.querySelector('[data-slot="accordion-trigger"]') as HTMLButtonElement;
-      if (trigger && trigger.getAttribute('aria-expanded') === 'false') {
-        trigger.click();
-        // Wait for the accordion to open before scrolling
-        setTimeout(() => {
-          element.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start',
-          });
-        }, 100);
-        return;
-      }
-    }
-    
-    element.scrollIntoView({ 
+
+  if (!element) {
+    return;
+  }
+
+  event.preventDefault();
+  window.history.pushState(null, '', `#${id}`);
+
+  const scrollToElement = () => {
+    element.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
+  };
+
+  if (id.startsWith('faq-item-')) {
+    const trigger = element.querySelector<HTMLButtonElement>(
+      '[data-slot="accordion-trigger"]'
+    );
+
+    if (trigger?.getAttribute('aria-expanded') === 'false') {
+      trigger.click();
+      window.setTimeout(scrollToElement, 200);
+      return;
+    }
   }
+
+  scrollToElement();
 }
 
 export function TableOfContents({ content, faqs, additionalContent, className }: TableOfContentsProps) {
-  const [headings, setHeadings] = useState<Heading[]>([]);
+  const headings = useMemo(
+    () => extractHeadings(content, faqs, additionalContent),
+    [content, faqs, additionalContent]
+  );
   const [activeId, setActiveId] = useState<string>('');
-
-  useEffect(() => {
-    const extractedHeadings = extractHeadings(content, faqs, additionalContent);
-    setHeadings(extractedHeadings);
-  }, [content, faqs, additionalContent]);
 
   useEffect(() => {
     // Intersection Observer to track which heading is currently in view
@@ -170,9 +176,11 @@ export function TableOfContents({ content, faqs, additionalContent, className }:
       </h3>
       <nav className="space-y-0.5">
         {headings.map(({ id, text, level, type }) => (
-          <button
+          <a
             key={id}
-            onClick={() => scrollToHeading(id)}
+            href={`#${id}`}
+            onClick={(event) => scrollToHeading(event, id)}
+            aria-current={activeId === id ? 'location' : undefined}
             className={`
               block w-full py-0.5 text-left text-sm leading-5 transition-colors
               hover:text-foreground lg:text-xs lg:leading-4
@@ -188,7 +196,7 @@ export function TableOfContents({ content, faqs, additionalContent, className }:
             `}
           >
             {text}
-          </button>
+          </a>
         ))}
       </nav>
     </div>
