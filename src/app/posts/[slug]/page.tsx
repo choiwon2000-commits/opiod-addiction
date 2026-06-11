@@ -90,9 +90,9 @@ export default async function PostPage({
   }
 
   return (
-    <section className="py-32 max-w-7xl justify-center flex mx-auto px-6">
-      <div className="flex flex-col gap-12 lg:flex-row lg:gap-24">
-        <article className="mx-auto">
+    <section className="mx-auto flex max-w-[1440px] justify-center px-6 py-24 lg:px-8 xl:px-12">
+      <div className="grid w-full grid-cols-1 gap-12 lg:grid-cols-[minmax(0,768px)_260px] lg:justify-center lg:gap-14 xl:gap-20">
+        <article className="min-w-0 w-full max-w-3xl">
           <div className="mb-8">
             <Link 
               href="/" 
@@ -156,7 +156,7 @@ export default async function PostPage({
           )}
         </article>
 
-        <aside className="lg:max-w-[500px] w-full">
+        <aside className="w-full lg:w-[260px] lg:justify-self-end">
           <div className="border-border bg-accent flex flex-col items-start rounded-lg border py-6 md:py-8">
             <div className="mb-5 px-6 last:mb-0">
               <div className="mb-2 text-xs font-semibold">Post</div>
@@ -203,8 +203,8 @@ export default async function PostPage({
 
           {/* Desktop Table of Contents - hidden on mobile */}
           {(post.body || (post.faqs && post.faqs.length > 0) || post.additionalContent) && (
-            <div className="hidden lg:flex border-border bg-accent/50 flex-col items-start rounded-lg border py-6 md:py-8 mt-6">
-              <div className="px-6 w-full">
+            <div className="sticky top-6 mt-5 hidden max-h-[calc(100vh-3rem)] overflow-y-auto rounded-md border border-border bg-background py-4 lg:flex lg:flex-col lg:items-start">
+              <div className="w-full px-4">
                 <TableOfContents 
                   content={post.body || []} 
                   faqs={post.faqs} 

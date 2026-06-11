@@ -165,22 +165,25 @@ export function TableOfContents({ content, faqs, additionalContent, className }:
 
   return (
     <div className={className}>
-      <h3 className="text-sm font-semibold mb-4">Table of Contents</h3>
-      <nav className="space-y-1">
+      <h3 className="mb-3 text-xs font-semibold uppercase text-muted-foreground">
+        Table of Contents
+      </h3>
+      <nav className="space-y-0.5">
         {headings.map(({ id, text, level, type }) => (
           <button
             key={id}
             onClick={() => scrollToHeading(id)}
             className={`
-              block text-left text-sm transition-colors hover:text-foreground w-full
+              block w-full py-0.5 text-left text-sm leading-5 transition-colors
+              hover:text-foreground lg:text-xs lg:leading-4
               ${activeId === id 
                 ? 'text-foreground font-medium' 
                 : 'text-muted-foreground'
               }
               ${level === 1 ? 'pl-0' : ''}
-              ${level === 2 ? 'pl-3' : ''}
-              ${level === 3 ? 'pl-6' : ''}
-              ${level === 4 ? 'pl-9' : ''}
+              ${level === 2 ? 'pl-2' : ''}
+              ${level === 3 ? 'pl-4' : ''}
+              ${level === 4 ? 'pl-6' : ''}
               ${type === 'faq' ? 'italic' : ''}
             `}
           >
